@@ -7,9 +7,19 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
 
-
+### Import Data
 data = pd.read_csv('input/train.csv')
 
+### Graph Categories 
+data.Category.value_counts().order().plot(kind='bar')
+
+### Graph PdDistricts 
+data.PdDistrict.value_counts().order().plot(kind='bar')
+
+
+
+
+## Random Forest Example
 X_tr = data
 y_tr = data["Category"]
 X_tr = X_tr.drop("Category", axis=1)
