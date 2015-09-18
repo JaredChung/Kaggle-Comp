@@ -1,0 +1,27 @@
+
+
+from pandas import DataFrame,Series
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.ensemble import RandomForestClassifier
+
+
+data = pd.read_csv('input/train.csv')
+
+X_tr = data
+y_tr = data["Category"]
+X_tr = X_tr.drop("Category", axis=1)
+
+X_test = pd.read_csv('input/test.csv')
+
+# transform vector of strings into matrix of bools
+y_tr = pd.get_dummies(y_tr)
+
+# fit classifier
+clf = RandomForestClassifier(n_estimators=20)
+clf.fit(X_tr, y_tr)
+
+# make predictions, place in a data frame preserving indexing and columns
+y_test = pd.DataFrame(clf.predict(X_test), index=X_test.index, columns=y_tr.columns)
