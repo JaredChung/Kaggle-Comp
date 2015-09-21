@@ -92,6 +92,10 @@ count(1)
 from crime
 group by 1
 ---------------------------------
+---Analyise Each Category Seperately (Find any Trend)
+
+
+
 
 select *
 from crime
