@@ -1,3 +1,10 @@
+--Questions to Answers
+---Analyise Each Category Seperately (Find any Trend)?
+--Vehicle Theft Drops in recent years? Causes
+--Segmentation of Categories into Blue_colar,White_colar and Other
+--Analyise what hour of the day is Safest/Dangerous
+--Temperature have a correlation to crime
+
 /*
 drop table if exists crime;
 
@@ -14,7 +21,6 @@ create table crime
 	Y float
 	)
 */
-
 
 select 
 extract(year from dates),
@@ -92,8 +98,6 @@ count(1)
 from crime
 group by 1
 ---------------------------------
----Analyise Each Category Seperately (Find any Trend)
-
 
 
 
