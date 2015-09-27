@@ -3,6 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 
-### Replace NaN with average
+### Clean Age Replace NaN with average
 for passenger in df[df['Age'].isnull()].index:
     df.loc[passenger, 'Age'] = np.average(df[df['Age'].notnull()]['Age'])
+
+### Clean A Replace NaN with average
+for passenger in df[df['Age'].isnull()].index:
+    df.loc[passenger, 'Age'] = np.average(df[df['Age'].notnull()]['Age'])
+
+data2.loc[data2.Sex == 'female'] = 0    
+data2.loc[data2.Sex == 'male'] = 1
