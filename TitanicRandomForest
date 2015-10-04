@@ -1,8 +1,11 @@
 
+from pandas import DataFrame,Series
 import pandas as pd
 import numpy as np
-import csv as csv
+from collections import OrderedDict
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn import svm
 
 # Data cleanup
 # TRAIN DATA
@@ -77,9 +80,5 @@ print 'Predicting...'
 output = forest.predict(test_data).astype(int)
 
 
-predictions_file = open("myfirstforest.csv", "wb")
-open_file_object = csv.writer(predictions_file)
-open_file_object.writerow(["PassengerId","Survived"])
-open_file_object.writerows(zip(ids, output))
-predictions_file.close()
-print 'Done.'
+d = DataFrame(data=OrderedDict([('PassengerId', ids), ('Survived', output)])) #### Create Dataframe of data
+d.to_csv('submission.csv', index=False)
