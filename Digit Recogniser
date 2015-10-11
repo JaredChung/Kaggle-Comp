@@ -12,4 +12,7 @@ test = pd.read_csv("test.csv")
 
 
 clf = RandomForestClassifier()
+clf = clf.fit(train[::,1::],train[::,0]
+
+
 
