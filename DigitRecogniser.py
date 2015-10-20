@@ -1,7 +1,6 @@
 from pandas import DataFrame,Series
 import pandas as pd
 import numpy as np
-from collections import OrderedDict
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn import svm
@@ -12,14 +11,14 @@ test = pd.read_csv("test.csv")
 train_data = train.values
 test_data = test.values
 
-clf = RandomForestClassifier()
-clf = clf.fit(train_data[::,1::],train_data[::,0]
+forest = RandomForestClassifier()
+forest = forest.fit(train_data[:,1:],train_data[:,0]
 
-output = clf.predict(test).astype(int)
+output = forest.predict(test).astype(int)
 
 
-
-data = pd.to_csv(data=OrderedDic
+d = DataFrame(output)
+d.to_csv("Submission.csv")
 
 
 
