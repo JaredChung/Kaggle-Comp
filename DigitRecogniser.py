@@ -13,7 +13,7 @@ train_data = train.values
 test_data = test.values
 ids = test.index
 
-forest = RandomForestClassifier()
+forest = RandomForestClassifier(n_estimators=100)
 forest = forest.fit(train_data[:,1:],train_data[:,0]
 
 output = forest.predict(test).astype(int)
