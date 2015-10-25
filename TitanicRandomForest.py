@@ -12,7 +12,8 @@ from sklearn import svm
 train_data = pd.read_csv('train.csv', header=0)        # Load the train file into a dataframe
 
 # female = 0, Male = 1
-
+train_data[train_data.Gender == 'female'] = 0
+train_data[train_data.Gender == 'male'] = 1
 
 train_data['Gender'] = train_data['Sex'].map( {'female': 0, 'male': 1} ).astype(int)
 
@@ -33,7 +34,6 @@ train_data.Embarked = train_data.Embarked.map( lambda x: Ports_dict[x]).astype(i
 
 # Remove the Name column, Cabin, Ticket, and Sex (since I copied and filled it to Gender)
 train_data = train_data.drop(['Name', 'Sex', 'Ticket', 'Cabin', 'PassengerId'], axis=1) 
-
 
 
 
