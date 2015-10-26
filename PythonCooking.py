@@ -7,7 +7,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
 
-
 #### Load the Json data into Variables
 with open('train.json') as train_f, open('test.json') as test_f:
     train_data = json.load(train_f)
