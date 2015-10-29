@@ -18,7 +18,6 @@ forest = forest.fit(train_data[:,1:],train_data[:,0]
 
 output = forest.predict(test).astype(int)
 
-
 d = DataFrame(data=OrderedDict([('ImageId', ids), ('Label', output)]))
 d.to_csv("Submission.csv",index=False)
 
