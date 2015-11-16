@@ -28,7 +28,8 @@ store = pd.read_csv("store.csv")
 len(train.Store.unique())
 len(store.Store.unique())
 
-
+#Merge store information
+train_store = pd.merge(train,store, left_on='Store',right_on = 'Store',how='left')
 
 
 
