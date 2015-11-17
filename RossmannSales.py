@@ -47,13 +47,13 @@ def clean_data(data)
     data.drop(['Date'], axis = 1, inplace= True)
     
     # Calculate time competition open time in months
-	  data['CompetitionOpen'] = 12 * (data.year - data.CompetitionOpenSinceYear) + \
+    data['CompetitionOpen'] = 12 * (data.year - data.CompetitionOpenSinceYear) + \
 	  (data.month - data.CompetitionOpenSinceMonth)
-	  data['CompetitionOpen'] = data.CompetitionOpen.apply(lambda x: x if x > 0 else 0)
-  	data.drop(['CompetitionOpenSinceMonth', 'CompetitionOpenSinceYear'], axis = 1, 
+    data['CompetitionOpen'] = data.CompetitionOpen.apply(lambda x: x if x > 0 else 0)
+    data.drop(['CompetitionOpenSinceMonth', 'CompetitionOpenSinceYear'], axis = 1, 
 	         inplace = True)
 	         
-	  data = pd.get_dummies(data, columns = ['p_1', 'p_2', 'p_3', 'p_4', 
+	data = pd.get_dummies(data, columns = ['p_1', 'p_2', 'p_3', 'p_4', 
 	                                       'StateHoliday' , 
 	                                       'StoreType', 
 	                                       'Assortment'])
@@ -65,10 +65,10 @@ def clean_data(data)
 
 
 	# Fill in missing values
-	  data = data.fillna(0)
-	  data = data.sort_index(axis=1)
+	 data = data.fillna(0)
+	 data = data.sort_index(axis=1)
 
-	  return data
+	 return data
 
 
 #clean test data
