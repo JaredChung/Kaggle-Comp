@@ -53,7 +53,21 @@ def clean_data(data)
     data['CompetitionOpen'] = data.CompetitionOpen.apply(lambda x: x if x > 0 else 0)
     data.drop(['CompetitionOpenSinceMonth', 'CompetitionOpenSinceYear'], axis = 1, 
 	         inplace = True)
-	         
+	
+	# Promo open time in months
+	data['PromoOpen'] = 12 * (data.year - data.Promo2SinceYear) + \
+	(data.woy - data.Promo2SinceWeek) / float(4)
+	data['PromoOpen'] = data.CompetitionOpen.apply(lambda x: x if x > 0 else 0)
+	data.drop(['Promo2SinceYear', 'Promo2SinceWeek'], axis = 1, 
+	         inplace = True)
+
+	# Get promo months
+	data['p_1'] = data.PromoInterval.apply(lambda x: x[:3] if type(x) == str else 0)
+	data['p_2'] = data.PromoInterval.apply(lambda x: x[4:7] if type(x) == str else 0)
+	data['p_3'] = data.PromoInterval.apply(lambda x: x[8:11] if type(x) == str else 0)
+	data['p_4'] = data.PromoInterval.apply(lambda x: x[12:15] if type(x) == str else 0)
+	
+	#Get Dummies for Categorical         
 	data = pd.get_dummies(data, columns = ['p_1', 'p_2', 'p_3', 'p_4', 
 	                                       'StateHoliday' , 
 	                                       'StoreType', 
@@ -66,14 +80,13 @@ def clean_data(data)
 
 
 	# Fill in missing values
-	 data = data.fillna(0)
-	 data = data.sort_index(axis=1)
+	data = data.fillna(0)
+	data = data.sort_index(axis=1)
 
-	 return data
+	return data
 
 
-#clean test data
-data = data[data['Open'] != 0]
+data = train[train['Open'] != 0]
 
 # Process training data
 data = process_data(data)
@@ -84,12 +97,11 @@ X_train = data.drop(['Sales', 'Customers'], axis = 1)
 y_train = data.Sales
 
 # Fit random forest model
-rf = RandomForestRegressor(n_jobs = -1, n_estimators = 15)
+rf = RandomForestRegressor(n_jobs = -1, n_estimators = 100)
 rf.fit(X_train, y_train)
 print('model fit')
 
-# Load and process test data
-test = pd.read_csv('../input/test.csv', parse_dates = ['Date'])
+# Process test data
 test = process_data(test)
 
 # Ensure same columns in test data as training
