@@ -20,9 +20,13 @@ PromoInterval - describes the consecutive intervals Promo2 is started, naming th
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.ensemble import RandomForestRegressor
 
-train = pd.read_csv("train.csv")
+
+train = pd.read_csv("train.csv", parse_dates = ['Date'])
 store = pd.read_csv("store.csv")
+test = pd.read_csv("test.csv")
+
 
 #Unique Store Count 1115
 len(train.Store.unique())
@@ -31,7 +35,18 @@ len(store.Store.unique())
 #Merge store information
 train_store = pd.merge(train,store, left_on='Store',right_on = 'Store',how='left')
 
+def clean_data(data)
+  
+    data = data[data.Sales > 0] # remove sales of $0
+    data['Month'] = data.Date.apply(Lambda x: x.month)
+    data['Day'] = data.Date.apply(Lambda x: x.day)
+    data['Year'] = data.Date.apply(Lambda x: x.year)
+    data['Wkofyr'] = data.Date.apply(Lambda x: x.weekofyear)
 
+
+
+#clean test data
+test.loc[test.Open.isnull(),'Open'] = 1
 
 
 
