@@ -32,19 +32,17 @@ test = pd.read_csv("test.csv", parse_dates = ['Date'])
 len(train.Store.unique())
 len(store.Store.unique())
 
-#Merge store information
-train_store = pd.merge(train,store, left_on='Store',right_on = 'Store',how='left')
-
 def clean_data(data)
     
+    data = pd.merge(data,store, left_on='Store',right_on = 'Store',how='left')
     data = data[data.Sales > 0] # Remove $0 Sales
     data.loc[data.Open.isnull(),'Open'] = 0
     #add extra date columns
     data = data[data.Sales > 0] # remove sales of $0
-    data['Month'] = data.Date.apply(Lambda x: x.month)
-    data['Day'] = data.Date.apply(Lambda x: x.day)
-    data['Year'] = data.Date.apply(Lambda x: x.year)
-    data['Wkofyr'] = data.Date.apply(Lambda x: x.weekofyear)
+    data['month'] = data.Date.apply(Lambda x: x.month)
+    data['day'] = data.Date.apply(Lambda x: x.day)
+    data['year'] = data.Date.apply(Lambda x: x.year)
+    data['wkofyr'] = data.Date.apply(Lambda x: x.weekofyear)
     data.drop(['Date'], axis = 1, inplace= True)
     
     # Calculate time competition open time in months
@@ -89,7 +87,7 @@ def clean_data(data)
 data = train[train['Open'] != 0]
 
 # Process training data
-data = process_data(data)
+data = clean_data(data)
 print('training data processed')
 
 # Set up training data
@@ -102,7 +100,7 @@ rf.fit(X_train, y_train)
 print('model fit')
 
 # Process test data
-test = process_data(test)
+test = clean_data(test)
 
 # Ensure same columns in test data as training
 for col in data.columns:
