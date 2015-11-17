@@ -25,7 +25,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 train = pd.read_csv("train.csv", parse_dates = ['Date'])
 store = pd.read_csv("store.csv")
-test = pd.read_csv("test.csv")
+test = pd.read_csv("test.csv", parse_dates = ['Date'])
 
 
 #Unique Store Count 1115
@@ -38,6 +38,7 @@ train_store = pd.merge(train,store, left_on='Store',right_on = 'Store',how='left
 def clean_data(data)
     
     data = data[data.Sales > 0] # Remove $0 Sales
+    data.loc[data.Open.isnull(),'Open'] = 0
     #add extra date columns
     data = data[data.Sales > 0] # remove sales of $0
     data['Month'] = data.Date.apply(Lambda x: x.month)
@@ -72,7 +73,42 @@ def clean_data(data)
 
 
 #clean test data
-test.loc[test.Open.isnull(),'Open'] = 1
+data = data[data['Open'] != 0]
+
+# Process training data
+data = process_data(data)
+print('training data processed')
+
+# Set up training data
+X_train = data.drop(['Sales', 'Customers'], axis = 1)
+y_train = data.Sales
+
+# Fit random forest model
+rf = RandomForestRegressor(n_jobs = -1, n_estimators = 15)
+rf.fit(X_train, y_train)
+print('model fit')
+
+# Load and process test data
+test = pd.read_csv('../input/test.csv', parse_dates = ['Date'])
+test = process_data(test)
+
+# Ensure same columns in test data as training
+for col in data.columns:
+    if col not in test.columns:
+        test[col] = np.zeros(test.shape[0])
+        
+test = test.sort_index(axis=1).set_index('Id')
+print('test data loaded and processed')
+
+# Make predictions
+X_test = test.drop(['Sales', 'Customers'], axis=1).values
+y_test = rf.predict(X_test)
+
+# Make Submission
+result = pd.DataFrame({'Id': test.index.values, 'Sales': y_test}).set_index('Id')
+result = result.sort_index()
+result.to_csv('submission.csv')
+print('submission created')
 
 
 
