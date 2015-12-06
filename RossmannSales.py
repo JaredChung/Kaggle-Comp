@@ -54,7 +54,7 @@ def clean_data(data):
 	
 	# Promo open time in months
 	data['PromoOpen'] = 12 * (data.year - data.Promo2SinceYear) + \
-	(data.woy - data.Promo2SinceWeek) / float(4)
+	(data.wkofyr - data.Promo2SinceWeek) / float(4)
 	data['PromoOpen'] = data.CompetitionOpen.apply(lambda x: x if x > 0 else 0)
 	data.drop(['Promo2SinceYear', 'Promo2SinceWeek'], axis = 1, 
 	         inplace = True)
