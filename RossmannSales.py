@@ -92,7 +92,7 @@ print('training data processed')
 
 # Set up training data
 X_train = data.drop(['Sales', 'Customers'], axis = 1)
-y_train = data.Sales
+y_train = data.Sales.values
 
 # Fit random forest model
 rf = RandomForestRegressor(n_jobs = -1, n_estimators = 100)
@@ -101,6 +101,9 @@ print('model fit')
 
 # Process test data
 test = clean_data(test)
+
+test_id = test.sort_index(axis=1).set_index('Id')
+print('test data loaded and processed')
 
 # Ensure same columns in test data as training
 for col in data.columns:
@@ -111,11 +114,11 @@ test = test.sort_index(axis=1).set_index('Id')
 print('test data loaded and processed')
 
 # Make predictions
-X_test = test.drop(['Sales', 'Customers'], axis=1).values
+X_test = test.drop(['Sales','Customers','Id'], axis=1).values
 y_test = rf.predict(X_test)
 
 # Make Submission
-result = pd.DataFrame({'Id': test.index.values, 'Sales': y_test}).set_index('Id')
+result = pd.DataFrame({'Id': test_id.index.values, 'Sales': y_test}).set_index('Id')
 result = result.sort_index()
 result.to_csv('submission.csv')
 print('submission created')
