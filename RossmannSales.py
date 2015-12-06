@@ -32,17 +32,17 @@ test = pd.read_csv("test.csv", parse_dates = ['Date'])
 len(train.Store.unique())
 len(store.Store.unique())
 
-def clean_data(data)
+def clean_data(data):
     
     data = pd.merge(data,store, left_on='Store',right_on = 'Store',how='left')
     data = data[data.Sales > 0] # Remove $0 Sales
     data.loc[data.Open.isnull(),'Open'] = 0
+
     #add extra date columns
-    data = data[data.Sales > 0] # remove sales of $0
-    data['month'] = data.Date.apply(Lambda x: x.month)
-    data['day'] = data.Date.apply(Lambda x: x.day)
-    data['year'] = data.Date.apply(Lambda x: x.year)
-    data['wkofyr'] = data.Date.apply(Lambda x: x.weekofyear)
+    data['month'] = data.Date.apply(lambda x: x.month)
+    data['day'] = data.Date.apply(lambda x: x.day)
+    data['year'] = data.Date.apply(lambda x: x.year)
+    data['wkofyr'] = data.Date.apply(lambda x: x.weekofyear)
     data.drop(['Date'], axis = 1, inplace= True)
     
     # Calculate time competition open time in months
