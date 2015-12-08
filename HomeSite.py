@@ -38,6 +38,11 @@ for f in train.columns:
         test_X[f] = lbl.transform(list(test_X[f].values))
 
 
+# Ensure same columns in test data as training
+for col in data.columns:
+    if col not in test.columns:
+        test[col] = np.zeros(test.shape[0])
+
 
 
 
